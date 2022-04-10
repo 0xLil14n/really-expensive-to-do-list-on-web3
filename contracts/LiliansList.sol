@@ -39,13 +39,14 @@ contract LiliansList is ERC721 {
         length += 1;
     }
     
-    function getLength() public view returns uint {
+    function getLength() public view returns (uint) {
         return length;
     }
-
-    function deleteFromList(string memory name) public {
-        // TODO()
-        // raise UnimplementedError();
-        length -= 1;
+    function getTask(uint taskId) public view returns (string memory, bool) {
+        string memory taskName = taskNames[taskId];
+        bool isDone = getIsDone(taskName);
+        return (taskName, isDone);
     }
+
+
 }

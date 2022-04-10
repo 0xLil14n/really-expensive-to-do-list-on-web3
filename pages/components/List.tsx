@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import React, { useEffect, useState } from 'react';
 import LiliansList from '../../abis/LiliansList.json';
+import contractAddress from '../../contractAddress';
 
 type ToDoItem = {
   name: string;
@@ -13,9 +14,7 @@ const KOVAN_RPC_URL =
   process.env.KOVAN_RPC_URL ||
   'https://kovan.infura.io/v3/0150f5b8462544b8acf6fc2e7b8dc290';
 // TODO env file, lmao gotta add this to my todo list smdh
-// TODO:
-// add length function to smart contract
-//
+
 const List: React.FC = () => {
   const [contract, setContract] = useState<Web3.Contract | null>(null);
   const [tasks, setTasks] = useState<ToDoItem[]>([]);
@@ -24,7 +23,7 @@ const List: React.FC = () => {
     const liliansListContract = new web3.eth.Contract(
       LiliansList.abi as AbiItem[],
 
-      LiliansList.networks[42].address // TODO update 42 to be configureable by network
+      contractAddress
     );
     setContract(liliansListContract);
 

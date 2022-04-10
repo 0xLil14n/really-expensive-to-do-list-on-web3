@@ -1,48 +1,41 @@
 import '../styles/globals.css';
 
 import type { AppProps } from 'next/app';
-import styled from 'styled-components';
 
 import React from 'react';
-import { ChakraProvider, CSSReset, Flex, Stack } from '@chakra-ui/react';
+import { Box, ChakraProvider, CSSReset, Flex, Stack } from '@chakra-ui/react';
 
 import List from './components/List';
 import Header from './components/Header';
-import { extendTheme } from '@chakra-ui/react';
 
-// 2. Extend the theme to include custom colors, fonts, etc
-const colors = {
-  brand: {
-    900: '#1a365d',
-    800: '#153e75',
-    700: '#2a69ac',
-  },
-};
+import Footer from './components/Footer';
+import theme from './theme';
 
-const theme = extendTheme({ colors });
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <CSSReset />
-      <Stack spacing={5} margin="12rem">
+      <Flex
+        flexDirection="column"
+        alignItems="center"
+        minWidth="300px"
+        backgroundColor={'tomato'}
+        height="100vh"
+        position="relative"
+      >
         <Header />
-        <List />
-      </Stack>
+        <Stack
+          justifyContent="center"
+          as="section"
+          margin="5rem 0rem"
+          maxWidth="500px"
+        >
+          <List />
+        </Stack>
+      </Flex>
+      <Footer />
     </ChakraProvider>
   );
 }
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  height: 80vh;
-  background: red;
-
-  & > * {
-    width: 23rem;
-  }
-`;
 
 export default MyApp;
