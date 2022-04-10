@@ -1,16 +1,22 @@
-import { Heading, Text } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 
 import React from 'react';
-import contractAddress from '../../contractAddress';
 
 const Header = () => {
   return (
-    <>
-      <Heading fontSize="2em">
-        Lilian's Really Expensive, Really Public Web3 To-Do List
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      flexDirection="column"
+      mt="1rem"
+      maxWidth="320px"
+      position="absolute"
+      left="2rem"
+    >
+      <Heading fontSize="1.5em">
+        lilian's really expensive, really public web3 to-do list
       </Heading>
-      <Text fontSize="1.5em">because lol</Text>
-    </>
+    </Flex>
   );
 };
 
