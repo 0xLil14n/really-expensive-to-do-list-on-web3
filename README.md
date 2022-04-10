@@ -1,3 +1,10 @@
+lilian's really expensive reaally public web3 to-do list
+
+store my to-do list on chain because i'm stupid
+and this is practice to get the job at abacus
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
