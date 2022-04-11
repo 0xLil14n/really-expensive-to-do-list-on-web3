@@ -10,15 +10,18 @@ const Home: NextPage = () => (
     alignItems="center"
     justifyContent="center"
     width="100%"
+    height="100vh"
+    minHeight="100vh"
+    color="white"
   >
     <Flex
       flexDirection="column"
       alignItems="center"
-      minWidth="250px"
-      minHeight="480px"
+      minWidth="200px"
+      minHeight="100vh"
       width="100%"
       maxWidth="500px"
-      height="100vh"
+      height="100%"
       position="relative"
       border="1px solid rgba(255,255,255,0.6)"
       borderRadius="0.5em"
@@ -26,16 +29,15 @@ const Home: NextPage = () => (
       <Header />
       <Stack
         justifyContent="center"
-        height="60%"
-        minHeight="200px"
+        height="100%"
         as="section"
-        margin="5rem 0rem"
+        marginBottom="0.7rem"
         maxWidth="500px"
       >
         <ToDoList />
       </Stack>
+      <Footer />
     </Flex>
-    <Footer />
   </Flex>
 );
 export default Home;

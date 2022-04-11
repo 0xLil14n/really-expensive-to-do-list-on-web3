@@ -14,6 +14,7 @@ const activeLabelStyles = {
 
 export const theme = extendTheme({
   colors,
+
   components: {
     Form: {
       variants: {

@@ -26,8 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <ChakraProvider theme={theme}>
         <CSSReset />
-        {APP_ID}
-        <MetamaskLogin />
+        {/* <MetamaskLogin /> */}
         <Component {...pageProps} />
       </ChakraProvider>
     </MoralisProvider>

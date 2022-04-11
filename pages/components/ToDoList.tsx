@@ -16,6 +16,7 @@ import LiliansList from '../../abis/LiliansList.json';
 import contractAddress from '../../contractAddress';
 import { MoralisProvider, useMoralis } from 'react-moralis';
 import MetamaskLogin from './MetamaskLogin';
+import AddToList from './AddToList';
 
 type ToDoItem = {
   name: string;
@@ -24,8 +25,8 @@ type ToDoItem = {
 
 // TODO:
 // empty state
-// on submit, enter task
 // loading state for transactions
+// support unchecking items
 
 const NODE_URL =
   'https://speedy-nodes-nyc.moralis.io/72216de496ff399faf1f925a/avalanche/testnet';
@@ -54,10 +55,7 @@ const ToDoList: React.FC = () => {
   const isLoading = isAuthenticating || isWeb3EnableLoading;
   const isLoggedIn = isAuthenticated || isWeb3Enabled;
   const [loading, setLoading] = useState(false);
-  const [contract, setContract] = useState<Web3.Contract | null>(null);
-  const [input, setInput] = useState('');
 
-  const [setIsDoneFn, setSetIsDoneFn] = useState<() => any>(() => undefined);
   const [tasks, setTasks] = useState<ToDoItem[]>([]);
   const setToDone = async (name: string) => {
     await (async () => {
@@ -78,15 +76,7 @@ const ToDoList: React.FC = () => {
       }
     })();
   };
-  const createNewTask = async () => {
-    const txn = await Moralis.Web3.executeFunction({
-      contractAddress,
-      abi: LiliansList.abi,
-      functionName: 'addToList',
-      params: { name: input },
-    });
-    await txn.wait();
-  };
+
   useEffect(() => {
     if (isAuthenticated) {
       enableWeb3();
@@ -104,8 +94,6 @@ const ToDoList: React.FC = () => {
       LiliansList.abi as AbiItem[],
       contractAddress
     );
-
-    setContract(liliansListContract);
 
     const taskNamesMethod = liliansListContract.methods.taskNames;
     const getIsDone = liliansListContract.methods.getIsDone;
@@ -130,13 +118,16 @@ const ToDoList: React.FC = () => {
   }, []);
   return (
     <>
-      <Stack justifyContent="center" margin="0px">
-        <Text fontSize={32}>to do:</Text>
+      <Stack justifyContent="center" margin="0px" padding="1rem">
+        <Text color="white" fontSize={'2xl'}>
+          to do:
+        </Text>
 
         <Stack
           minHeight="100px"
           backgroundColor="rgba(255, 250, 250, 0.3)"
           borderRadius="0.5rem"
+          padding="1rem"
         >
           {loading && (
             <Flex alignItems="center" justifyContent="center">
@@ -148,6 +139,7 @@ const ToDoList: React.FC = () => {
           {!loading &&
             tasks.map(({ name, isDone }) => (
               <Checkbox
+                color="white"
                 name={name}
                 isChecked={isDone}
                 isDisabled={!isLoggedIn}
@@ -157,33 +149,14 @@ const ToDoList: React.FC = () => {
                   console.log('e is', e.target.name);
                 }}
                 key={name}
-                padding="1rem"
+                // padding="0.3rem"
               >
                 {name}
               </Checkbox>
             ))}
         </Stack>
 
-        {isLoggedIn && (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              console.log('submitting for', input);
-              createNewTask();
-            }}
-          >
-            <Input type="submit" display={'none'} />
-            <FormControl
-              padding="1.2rem 0px 0px"
-              variant="floating"
-              id="task-name"
-              onChange={(e: React.FormEvent) => setInput(e.target.value)}
-            >
-              <Input placeholder=" " value={input} />
-              <FormLabel padding="1.2rem 0px 0px">enter task</FormLabel>
-            </FormControl>
-          </form>
-        )}
+        {isLoggedIn && <AddToList />}
         {!isLoggedIn && <MetamaskLogin />}
       </Stack>
     </>

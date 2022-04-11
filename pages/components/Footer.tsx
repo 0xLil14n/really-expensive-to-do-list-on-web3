@@ -5,24 +5,23 @@ import contractAddress from '../../contractAddress';
 const Footer = () => (
   <Box
     as="footer"
-    position={'absolute'}
-    bottom={10}
     textAlign="center"
-    left={0}
-    right={0}
-    borderTop="1px solid purple"
-    padding="20px 0px 0px"
+    borderTop="1px solid white"
+    width="100%"
+    padding="1rem 0"
+    backgroundColor="rgba(255, 250, 250, 0.2)"
+    zIndex={1000}
   >
-    <Text fontSize="1.4em">made with 💜 by lilian</Text>
-    {/* <Text fontSize="1em">deployed on kovan</Text> */}
+    <Text fontSize="1.1rem">made with 💜 by lilian</Text>
+
     <Link
       target="_blank"
       href={`https://kovan.etherscan.io/address/${contractAddress}#code`}
-      fontSize="0.9em"
+      fontSize="0.7em"
     >
-      {/* <Text fontSize="1em">view contract on etherscan </Text> */}
       view contract on etherscan
     </Link>
+    <Text fontSize="0.7rem">deployed on kovan</Text>
   </Box>
 );
 
