@@ -7,13 +7,15 @@ import {
   FormLabel,
   FormControl,
   Flex,
+  Button,
 } from '@chakra-ui/react';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import React, { useEffect, useState } from 'react';
 import LiliansList from '../../abis/LiliansList.json';
 import contractAddress from '../../contractAddress';
-import { useMoralis } from 'react-moralis';
+import { MoralisProvider, useMoralis } from 'react-moralis';
+import MetamaskLogin from './MetamaskLogin';
 
 type ToDoItem = {
   name: string;
@@ -23,6 +25,7 @@ type ToDoItem = {
 // TODO:
 // empty state
 // on submit, enter task
+// loading state for transactions
 
 const NODE_URL =
   'https://speedy-nodes-nyc.moralis.io/72216de496ff399faf1f925a/avalanche/testnet';
@@ -44,28 +47,57 @@ const ToDoList: React.FC = () => {
     logout,
     isAuthenticating,
     isWeb3EnableLoading,
+    network,
+    chainId,
     Moralis,
   } = useMoralis();
   const isLoading = isAuthenticating || isWeb3EnableLoading;
-  const isLoggedIn = isAuthenticated;
+  const isLoggedIn = isAuthenticated || isWeb3Enabled;
   const [loading, setLoading] = useState(false);
   const [contract, setContract] = useState<Web3.Contract | null>(null);
+  const [input, setInput] = useState('');
 
-  const [setIsDoneFn, setSetIsDoneFn] = useState<() => any>(
-    () => (_: string) => undefined
-  );
+  const [setIsDoneFn, setSetIsDoneFn] = useState<() => any>(() => undefined);
   const [tasks, setTasks] = useState<ToDoItem[]>([]);
-  const updateIsDone = async (name: string) => {
-    const isDone = await setIsDoneFn(name);
-
-    // const isDone = await contract.methods.setToDone(name).call();
-    alert('getisdone:' + isDone);
+  const setToDone = async (name: string) => {
+    await (async () => {
+      console.log('setting 2 done for', input);
+      console.log('account', account);
+      if (isLoggedIn) {
+        console.log('is authed?', isAuthenticated);
+        console.log('is enbled?', isWeb3Enabled);
+        console.log('chainId?', chainId);
+        console.log('setting 2 done for', name);
+        const txn = await Moralis.Web3.executeFunction({
+          contractAddress,
+          abi: LiliansList.abi,
+          functionName: 'setToDone',
+          params: { name },
+        });
+        await txn.wait();
+      }
+    })();
   };
-
+  const createNewTask = async () => {
+    const txn = await Moralis.Web3.executeFunction({
+      contractAddress,
+      abi: LiliansList.abi,
+      functionName: 'addToList',
+      params: { name: input },
+    });
+    await txn.wait();
+  };
+  useEffect(() => {
+    if (isAuthenticated) {
+      enableWeb3();
+    }
+  }, [isAuthenticated]);
   useEffect(() => {
     setLoading(true);
-    Moralis.enableWeb3();
-    authenticate();
+    if (isAuthenticated) {
+      enableWeb3();
+    }
+
     const web3 = new Web3(KOVAN_RPC_URL);
 
     const liliansListContract = new web3.eth.Contract(
@@ -77,32 +109,19 @@ const ToDoList: React.FC = () => {
 
     const taskNamesMethod = liliansListContract.methods.taskNames;
     const getIsDone = liliansListContract.methods.getIsDone;
-    const setToDone = liliansListContract.methods.setToDone;
-    setSetIsDoneFn(() => async (x: string) => {
-      console.log('setting 2 done for', x);
-      console.log('account', account);
-
-      Moralis.executeFunction({
-        contractAddress,
-        abi: LiliansList.abi,
-        functionName: 'setIsDone',
-        params: { name: x },
-      });
-
-      // setToDone(x).send({ from: account });
-    });
-
-    let index = 3; // || liliansListContract.methods.length.call() - 1; // TODO fix
 
     let newTasks: ToDoItem[] = [];
 
     (async () => {
-      while (index >= 0) {
+      const length = await liliansListContract.methods.length().call();
+      let index = 0;
+      console.log('index', index);
+      while (index < length) {
         const name = await taskNamesMethod(index).call();
         const isDone = await getIsDone(name).call();
 
         newTasks.push({ name, isDone });
-        index -= 1;
+        index += 1;
       }
     })().then(() => {
       setTasks(newTasks);
@@ -125,15 +144,16 @@ const ToDoList: React.FC = () => {
               <Spinner size="md" color="white" />
             </Flex>
           )}
-          <div>account:{account}</div>
+
           {!loading &&
             tasks.map(({ name, isDone }) => (
               <Checkbox
                 name={name}
                 isChecked={isDone}
+                isDisabled={!isLoggedIn}
                 onChange={(e) => {
                   e.preventDefault();
-                  updateIsDone(e.target.name);
+                  setToDone(e.target.name);
                   console.log('e is', e.target.name);
                 }}
                 key={name}
@@ -144,10 +164,27 @@ const ToDoList: React.FC = () => {
             ))}
         </Stack>
 
-        <FormControl padding="1.2rem 0px 0px" variant="floating" id="task-name">
-          <Input placeholder=" " />
-          <FormLabel padding="1.2rem 0px 0px">enter task</FormLabel>
-        </FormControl>
+        {isLoggedIn && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              console.log('submitting for', input);
+              createNewTask();
+            }}
+          >
+            <Input type="submit" display={'none'} />
+            <FormControl
+              padding="1.2rem 0px 0px"
+              variant="floating"
+              id="task-name"
+              onChange={(e: React.FormEvent) => setInput(e.target.value)}
+            >
+              <Input placeholder=" " value={input} />
+              <FormLabel padding="1.2rem 0px 0px">enter task</FormLabel>
+            </FormControl>
+          </form>
+        )}
+        {!isLoggedIn && <MetamaskLogin />}
       </Stack>
     </>
   );

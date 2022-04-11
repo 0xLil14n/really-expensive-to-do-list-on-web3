@@ -36,17 +36,17 @@ contract LiliansList is ERC721 {
 
     function addToList(string memory name) public {
         liliansVeryPublicWeb3ToDoList[name] = false;
+        taskNames.push(name);
         length += 1;
     }
     
     function getLength() public view returns (uint) {
         return length;
     }
+
     function getTask(uint taskId) public view returns (string memory, bool) {
         string memory taskName = taskNames[taskId];
         bool isDone = getIsDone(taskName);
         return (taskName, isDone);
     }
-
-
 }
