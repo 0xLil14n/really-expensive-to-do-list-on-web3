@@ -2,7 +2,6 @@ import { Button } from '@chakra-ui/react';
 import { useEffect } from 'react';
 
 import { useMoralis } from 'react-moralis';
-import styled from 'styled-components';
 
 const MetamaskLogin = () => {
   const {
@@ -29,12 +28,9 @@ const MetamaskLogin = () => {
   };
 
   useEffect(() => {
-    console.log('here1 authed', isAuthenticated);
     if (isAuthenticated) {
       enableWeb3();
-      console.log('enablingweb3');
     }
-    console.log('here2 authed', isAuthenticated);
   }, [isAuthenticated]);
 
   return (
