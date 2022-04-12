@@ -17,7 +17,24 @@ const MetamaskLogin = () => {
   const isLoggedIn = isAuthenticated;
   const enableAndAuthenticate = async () => {
     await enableWeb3();
-    await authenticate().then(() => console.log('authenticated'));
+
+    if (window && (window as any).web3) {
+      await authenticate();
+    } else {
+      await authenticate({
+        provider: 'walletConnect',
+        mobileLinks: [
+          'rainbow',
+          'metamask',
+          'argent',
+          'trust',
+          'imtoken',
+          'pillar',
+        ],
+      });
+    }
+
+    // .catch(() => console.log('here??'));
   };
   const signInOrSignOut = () => {
     if (!isWeb3Enabled || !isAuthenticated) {
@@ -37,7 +54,7 @@ const MetamaskLogin = () => {
     <>
       <Button
         variant="contained"
-        color="primary"
+        borderRadius={'1rem'}
         disabled={isAuthenticating}
         onClick={signInOrSignOut}
       >

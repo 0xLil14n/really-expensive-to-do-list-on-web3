@@ -1,4 +1,4 @@
-import { Stack } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 
 import React from 'react';
 
@@ -16,16 +16,17 @@ import TaskList from './task-list/TaskList';
 // support task deletion/archiving
 
 const ToDoList: React.FC = () => {
-  const { isWeb3Enabled, isAuthenticated } = useMoralis();
+  const { isAuthenticated } = useMoralis();
 
-  const isLoggedIn = isAuthenticated || isWeb3Enabled;
+  const isLoggedIn = isAuthenticated;
 
   return (
     <>
       <Stack width="370px" justifyContent="center" padding="1rem">
         <TaskList />
 
-        {isLoggedIn ? <AddToList /> : <MetamaskLogin />}
+        {isLoggedIn && <AddToList />}
+        <MetamaskLogin />
       </Stack>
     </>
   );

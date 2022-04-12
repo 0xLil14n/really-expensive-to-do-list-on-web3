@@ -41,7 +41,7 @@ const TaskList = () => {
     const getTask = liliansListContract.methods.getTask;
     /*
         using web3 here instead of moralis calls
-        because moralis is high-key trash
+        because moralis is high-key trash (or is it me thats trash?)
         and it crashes when the web3 provider isn't initialized
         but also has issues with the asynch part of enabling web3
     */
@@ -57,7 +57,6 @@ const TaskList = () => {
         index += 1;
       }
     })().then(() => {
-      console.log('setting tasks', newTasks);
       setTasks(newTasks);
       setLoading(false);
     });

@@ -13,7 +13,6 @@ const LoadingState: React.FC<Props> = ({ isLoading }) =>
       bottom={0}
       height="100%"
       width="100%"
-      borderRadius={'0.5rem'}
       margin="0 !important"
       display="flex"
       flexDirection="column"
@@ -22,6 +21,7 @@ const LoadingState: React.FC<Props> = ({ isLoading }) =>
       backgroundColor="rgba(0,0,0,0.7)"
       alignItems="center"
       justifyContent="center"
+      zIndex={1000}
     >
       <Spinner marginBottom="1rem" size="md" color="white" />
       <Text>loading on chain tasks...</Text>
