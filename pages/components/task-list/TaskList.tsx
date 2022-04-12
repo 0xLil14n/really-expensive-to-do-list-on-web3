@@ -1,16 +1,24 @@
-import { Checkbox, Flex, Spinner, Stack, Text } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useMoralis } from 'react-moralis';
 import Web3 from 'web3';
+import { AbiItem } from 'web3-utils';
+
 import contractAddress from '../../../contractAddress';
 import LiliansList from '../../../abis/LiliansList.json';
-import { setIsDone } from '../../contractInteractions/contract';
+
 import LoadingState from './LoadingState';
 import TaskItem from './TaskItem';
+
 const KOVAN_RPC_URL =
   process.env.KOVAN_RPC_URL ||
   'https://kovan.infura.io/v3/0150f5b8462544b8acf6fc2e7b8dc290';
 // TODO env file, lmao gotta add this to my todo list smdh
+
+export type ToDoItem = {
+  name: string;
+  isDone: boolean;
+};
 
 const TaskList = () => {
   const [loading, setLoading] = useState(true);

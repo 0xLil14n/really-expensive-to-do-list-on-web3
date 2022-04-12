@@ -3,9 +3,8 @@ import type { AppProps } from 'next/app';
 import React from 'react';
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
 
-import theme from './theme';
+import theme from '../utils/theme';
 import { MoralisProvider } from 'react-moralis';
-import MetamaskLogin from './components/MetamaskLogin';
 
 // defaults to lilian's moralis App ID and server URL
 // TODO: configure the defaults in the nginx config and/or if we move to nextjs, in vercel
@@ -24,7 +23,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <ChakraProvider theme={theme}>
         <CSSReset />
-        {/* <MetamaskLogin /> */}
         <Component {...pageProps} />
       </ChakraProvider>
     </MoralisProvider>

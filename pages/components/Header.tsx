@@ -1,6 +1,4 @@
-import { Flex, Heading, Text } from '@chakra-ui/react';
-
-import React from 'react';
+import { Flex, Heading } from '@chakra-ui/react';
 
 const Header = () => {
   return (
@@ -13,7 +11,7 @@ const Header = () => {
       backgroundColor="rgba(255, 250, 250, 0.3)"
     >
       <Heading fontSize="lg" maxWidth="250px" color="white">
-        lilian's really expensive, really public web3 to-do list
+        lilian&#39;s really expensive, really public web3 to-do list
       </Heading>
     </Flex>
   );

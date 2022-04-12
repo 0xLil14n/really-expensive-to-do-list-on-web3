@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { createNewTask } from '../contractInteractions/contract';
+import { createNewTask } from '../../contractInteractions/contract';
 
 const AddToList: React.FC = () => {
   const [input, setInput] = useState('');
@@ -18,7 +18,10 @@ const AddToList: React.FC = () => {
         padding="1.2rem 0px 0px"
         variant="floating"
         id="task-name"
-        onChange={(e: React.FormEvent) => setInput(e.target.value)}
+        onChange={(e) => {
+          const target = e.target as HTMLInputElement;
+          setInput(target.value);
+        }}
       >
         <Input placeholder=" " />
         <FormLabel padding="1.2rem 0px 0px">enter task</FormLabel>

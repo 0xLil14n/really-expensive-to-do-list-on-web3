@@ -1,6 +1,6 @@
 import Moralis from 'moralis';
-import contractAddress from '../../contractAddress';
-import LiliansList from '../../abis/LiliansList.json';
+import contractAddress from '../contractAddress';
+import LiliansList from '../abis/LiliansList.json';
 
 const Methods = {
   SetToDone: 'setToDone',
@@ -46,7 +46,7 @@ export const createNewTask = async (taskName: string) => {
 };
 
 export const getIsDone = async (taskName: string) => {
-  const isDone: boolean = await Moralis.executeFunction({
+  const isDone = await Moralis.executeFunction({
     ...contractOptions,
     functionName: Methods.GetIsDone,
     params: { name: taskName },
