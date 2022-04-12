@@ -15,8 +15,12 @@ const contractOptions = {
   contractAddress,
   abi: LiliansList.abi,
 };
+export const setIsDone = (taskName: string, isDone: boolean) => {
+  isDone ? setUndone(taskName) : setToDone(taskName);
+};
 export const setToDone = async (taskName: string) => {
-  Moralis.Web3.executeFunction({
+  await Moralis.enableWeb3();
+  await Moralis.executeFunction({
     ...contractOptions,
     functionName: Methods.SetToDone,
     params: { name: taskName },
@@ -24,7 +28,8 @@ export const setToDone = async (taskName: string) => {
 };
 
 export const setUndone = async (taskName: string) => {
-  await Moralis.Web3.executeFunction({
+  await Moralis.enableWeb3();
+  await Moralis.executeFunction({
     ...contractOptions,
     functionName: Methods.SetUndone,
     params: { name: taskName },
@@ -32,8 +37,8 @@ export const setUndone = async (taskName: string) => {
 };
 
 export const createNewTask = async (taskName: string) => {
-  await Moralis.Web3.enableWeb3();
-  await Moralis.Web3.executeFunction({
+  await Moralis.enableWeb3();
+  await Moralis.executeFunction({
     ...contractOptions,
     functionName: Methods.AddToList,
     params: { name: taskName },
@@ -41,7 +46,7 @@ export const createNewTask = async (taskName: string) => {
 };
 
 export const getIsDone = async (taskName: string) => {
-  const isDone: boolean = await Moralis.Web3.executeFunction({
+  const isDone: boolean = await Moralis.executeFunction({
     ...contractOptions,
     functionName: Methods.GetIsDone,
     params: { name: taskName },

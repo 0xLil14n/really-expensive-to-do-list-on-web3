@@ -10,8 +10,8 @@ const Home: NextPage = () => (
     alignItems="center"
     justifyContent="center"
     width="100%"
-    height="100vh"
-    minHeight="100vh"
+    height={['100%', '100vh']}
+    // minHeight="100vh"
     color="white"
   >
     <Flex
@@ -28,10 +28,12 @@ const Home: NextPage = () => (
     >
       <Header />
       <Stack
+        position="relative"
         justifyContent="center"
+        alignItems="center"
         height="100%"
+        width="100%"
         as="section"
-        marginBottom="0.7rem"
         maxWidth="500px"
       >
         <ToDoList />

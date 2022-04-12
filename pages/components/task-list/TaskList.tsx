@@ -2,24 +2,20 @@ import { Checkbox, Flex, Spinner, Stack, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useMoralis } from 'react-moralis';
 import Web3 from 'web3';
-import contractAddress from '../../contractAddress';
-import LiliansList from '../../abis/LiliansList.json';
-import { setToDone, setUndone } from '../contractInteractions/contract';
+import contractAddress from '../../../contractAddress';
+import LiliansList from '../../../abis/LiliansList.json';
+import { setIsDone } from '../../contractInteractions/contract';
+import LoadingState from './LoadingState';
+import TaskItem from './TaskItem';
 const KOVAN_RPC_URL =
   process.env.KOVAN_RPC_URL ||
   'https://kovan.infura.io/v3/0150f5b8462544b8acf6fc2e7b8dc290';
 // TODO env file, lmao gotta add this to my todo list smdh
 
-type ToDoItem = {
-  name: string;
-  isDone: boolean;
-};
 const TaskList = () => {
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState<ToDoItem[]>([]);
-  const setIsDone = (taskName: string, isDone: boolean) => {
-    isDone ? setUndone(taskName) : setToDone(taskName);
-  };
+
   const { isAuthenticated } = useMoralis();
   const isLoggedIn = isAuthenticated;
 
@@ -67,34 +63,12 @@ const TaskList = () => {
 
       <Stack
         minHeight="100px"
-        width="300px"
         backgroundColor="rgba(255, 250, 250, 0.3)"
         borderRadius="0.5rem"
         padding="1rem"
       >
-        {loading && (
-          <Flex alignItems="center" justifyContent="center">
-            <Text>loading on chain tasks...</Text>
-            <Spinner size="md" color="white" />
-          </Flex>
-        )}
-
-        {!loading &&
-          tasks.map(({ name, isDone }) => (
-            <Checkbox
-              color="white"
-              name={name}
-              isChecked={isDone}
-              isDisabled={!isLoggedIn}
-              onChange={(e) => {
-                e.preventDefault();
-                setIsDone(e.target.name, isDone);
-              }}
-              key={name}
-            >
-              {name}
-            </Checkbox>
-          ))}
+        <TaskItem tasks={tasks} isLoggedIn={isLoggedIn} />
+        <LoadingState isLoading={loading} />
       </Stack>
     </>
   );

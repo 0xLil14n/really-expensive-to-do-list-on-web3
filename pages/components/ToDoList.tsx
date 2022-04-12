@@ -5,7 +5,7 @@ import React from 'react';
 import { useMoralis } from 'react-moralis';
 import MetamaskLogin from './MetamaskLogin';
 import AddToList from './AddToList';
-import TaskList from './TaskList';
+import TaskList from './task-list/TaskList';
 
 // TODO:
 // empty state
@@ -22,7 +22,7 @@ const ToDoList: React.FC = () => {
 
   return (
     <>
-      <Stack justifyContent="center" margin="0px" padding="1rem">
+      <Stack width="370px" justifyContent="center" padding="1rem">
         <TaskList />
 
         {isLoggedIn ? <AddToList /> : <MetamaskLogin />}
