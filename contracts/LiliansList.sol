@@ -6,6 +6,10 @@ contract LiliansList is ERC721 {
     address public owner;
     uint public length;
     string[] public taskNames;
+    event TaskCreated (
+        uint256 taskId,
+        string taskName
+    );
     
     mapping(string => bool) public liliansVeryPublicWeb3ToDoList;
    
@@ -38,6 +42,10 @@ contract LiliansList is ERC721 {
         liliansVeryPublicWeb3ToDoList[name] = false;
         taskNames.push(name);
         length += 1;
+        emit TaskCreated(
+            length,
+            name
+        );
     }
     
     function getLength() public view returns (uint) {

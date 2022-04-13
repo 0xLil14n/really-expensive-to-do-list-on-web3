@@ -11,7 +11,7 @@ type Props = {
 const TaskItem: React.FC<Props> = ({ tasks, isLoggedIn }) => (
   <>
     {tasks &&
-      tasks.map(({ name, isDone }) => (
+      tasks.map(({ name, isDone }, index) => (
         <Checkbox
           color="white"
           name={name}
@@ -21,7 +21,7 @@ const TaskItem: React.FC<Props> = ({ tasks, isLoggedIn }) => (
             e.preventDefault();
             setIsDone(e.target.name, isDone);
           }}
-          key={name}
+          key={name + index}
         >
           {name}
         </Checkbox>

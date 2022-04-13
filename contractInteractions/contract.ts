@@ -38,11 +38,12 @@ export const setUndone = async (taskName: string) => {
 
 export const createNewTask = async (taskName: string) => {
   await Moralis.enableWeb3();
-  await Moralis.executeFunction({
+  return await Moralis.executeFunction({
     ...contractOptions,
     functionName: Methods.AddToList,
     params: { name: taskName },
   });
+  // return txn.wait();
 };
 
 export const getIsDone = async (taskName: string) => {

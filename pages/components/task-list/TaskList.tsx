@@ -15,12 +15,48 @@ const KOVAN_RPC_URL =
   'https://kovan.infura.io/v3/0150f5b8462544b8acf6fc2e7b8dc290';
 // TODO env file, lmao gotta add this to my todo list smdh
 
+const KOVAN_WEBSOCKET =
+  process.env.KOVAN_WEBSOCKET ||
+  'wss://kovan.infura.io/ws/v3/0150f5b8462544b8acf6fc2e7b8dc290';
 export type ToDoItem = {
   name: string;
   isDone: boolean;
 };
 
-const TaskList = () => {
+export const refreshTaskList = async () => {
+  const web3 = new Web3(KOVAN_WEBSOCKET);
+
+  const liliansListContract = new web3.eth.Contract(
+    LiliansList.abi as AbiItem[],
+    contractAddress
+  );
+
+  const getLength = liliansListContract.methods.length;
+  const getTask = liliansListContract.methods.getTask;
+  /*
+      using web3 here instead of moralis calls
+      because moralis is high-key trash (or is it me thats trash?)
+      and it crashes when the web3 provider isn't initialized
+      but also has issues with the asynch part of enabling web3
+  */
+
+  let newTasks: ToDoItem[] = [];
+
+  await (async () => {
+    const length = await getLength().call();
+    let index = 0;
+    while (index < length) {
+      const { 0: name, 1: isDone } = await getTask(index).call();
+      newTasks.push({ name, isDone });
+      index += 1;
+    }
+  })();
+  return newTasks;
+};
+type Props = {
+  setIsNotSubmitting: () => void;
+};
+const TaskList: React.FC<Props> = ({ setIsNotSubmitting }) => {
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState<ToDoItem[]>([]);
 
@@ -30,36 +66,30 @@ const TaskList = () => {
   useEffect(() => {
     setLoading(true);
 
-    const web3 = new Web3(KOVAN_RPC_URL);
+    const updateList = () =>
+      refreshTaskList().then((newTasks) => {
+        setTasks(newTasks);
+        setLoading(false);
+      });
+
+    updateList();
+
+    const web3 = new Web3(KOVAN_WEBSOCKET);
 
     const liliansListContract = new web3.eth.Contract(
       LiliansList.abi as AbiItem[],
       contractAddress
     );
-
-    const getLength = liliansListContract.methods.length;
-    const getTask = liliansListContract.methods.getTask;
-    /*
-        using web3 here instead of moralis calls
-        because moralis is high-key trash (or is it me thats trash?)
-        and it crashes when the web3 provider isn't initialized
-        but also has issues with the asynch part of enabling web3
-    */
-
-    let newTasks: ToDoItem[] = [];
-
     (async () => {
-      const length = await getLength().call();
-      let index = 0;
-      while (index < length) {
-        const { 0: name, 1: isDone } = await getTask(index).call();
-        newTasks.push({ name, isDone });
-        index += 1;
-      }
-    })().then(() => {
-      setTasks(newTasks);
-      setLoading(false);
-    });
+      const latest = await web3.eth.getBlockNumber();
+      liliansListContract.events.TaskCreated(
+        { fromBlock: latest },
+        (error: any, event: any) => {
+          updateList();
+          setIsNotSubmitting();
+        }
+      );
+    })();
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 import { Stack, Text } from '@chakra-ui/react';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useMoralis } from 'react-moralis';
 import MetamaskLogin from './MetamaskLogin';
@@ -17,15 +17,20 @@ import TaskList from './task-list/TaskList';
 
 const ToDoList: React.FC = () => {
   const { isAuthenticated } = useMoralis();
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const isLoggedIn = isAuthenticated;
 
   return (
     <>
       <Stack width="370px" justifyContent="center" padding="1rem">
-        <TaskList />
+        <TaskList setIsNotSubmitting={() => setIsSubmitting(false)} />
 
-        {isLoggedIn && <AddToList />}
+        {isLoggedIn && (
+          <AddToList
+            setIsSubmitting={() => setIsSubmitting(true)}
+            isSubmitting={isSubmitting}
+          />
+        )}
         <MetamaskLogin />
       </Stack>
     </>

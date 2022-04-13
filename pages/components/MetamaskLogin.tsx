@@ -33,8 +33,6 @@ const MetamaskLogin = () => {
         ],
       });
     }
-
-    // .catch(() => console.log('here??'));
   };
   const signInOrSignOut = () => {
     if (!isWeb3Enabled || !isAuthenticated) {
