@@ -14,6 +14,9 @@ contract LiliansList is ERC721 {
     event TaskFinished (
         string taskName
     );
+    event TaskUnFinished (
+        string taskName
+    );
     mapping(string => uint) public taskNameToId;
     mapping(string => bool) public liliansVeryPublicWeb3ToDoList;
    
@@ -40,6 +43,9 @@ contract LiliansList is ERC721 {
 
     function setUndone(string memory name) public {
         liliansVeryPublicWeb3ToDoList[name] = false;
+        emit TaskUnFinished(
+            name
+        );
     }
 
     function getIsDone(string memory name) public view returns (bool) {
