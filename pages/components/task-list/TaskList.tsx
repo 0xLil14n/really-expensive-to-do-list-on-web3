@@ -81,12 +81,21 @@ const TaskList: React.FC<Props> = ({ setIsNotSubmitting }) => {
       contractAddress
     );
     (async () => {
+      // TODO
+      // delet duplicate code
+      // optimize refresh to only get relevant updates
+      // fix "any" types  😏
       const latest = await web3.eth.getBlockNumber();
-      liliansListContract.events.TaskCreated(
+      liliansListContract.events.allEvents(
         { fromBlock: latest },
         (error: any, event: any) => {
-          updateList();
-          setIsNotSubmitting();
+          switch (event.event) {
+            case 'TaskCreated':
+              setIsNotSubmitting();
+            default:
+              // all events should call updateList rn, but this should be optimized
+              updateList();
+          }
         }
       );
     })();

@@ -10,7 +10,11 @@ contract LiliansList is ERC721 {
         uint256 taskId,
         string taskName
     );
-    
+
+    event TaskFinished (
+        string taskName
+    );
+    mapping(string => uint) public taskNameToId;
     mapping(string => bool) public liliansVeryPublicWeb3ToDoList;
    
     // ideally make this a NFT for people to create their own todo lists lmao
@@ -28,6 +32,10 @@ contract LiliansList is ERC721 {
 
     function setToDone(string memory name) public {
         liliansVeryPublicWeb3ToDoList[name] = true;
+        
+        emit TaskFinished(
+            name
+        );
     }
 
     function setUndone(string memory name) public {
