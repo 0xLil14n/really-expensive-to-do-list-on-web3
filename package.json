@@ -24,6 +24,7 @@
     "dotenv": "^16.0.0",
     "ethereumjs-util": "^7.1.4",
     "framer-motion": "^5",
+    "fs": "^0.0.1-security",
     "hardhat": "^2.9.3",
     "moralis": "^1.5.9",
     "next": "12.1.4",

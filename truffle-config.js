@@ -5,8 +5,9 @@ require('babel-register');
 require('babel-polyfill');
 require('dotenv').config();
 const HDWalletProvider = require('truffle-hdwallet-provider-privkey');
+
 const privateKeys = [process.env.PRIVATE_KEY] || '';
-const KOVAN_RPC_URL = process.env.KOVAN_RPC_URL;
+const MUMBAI_RPC_URL = 'https://rpc-mumbai.maticvigil.com/';
 const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL;
 const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL;
 const ROPSTEN_RPC_URL = process.env.ROPSTEN_RPC_URL;
@@ -26,6 +27,14 @@ module.exports = {
       gasPrice: 5000000000, // 5 gwei
       network_id: 42,
     },
+    // mumbai: {
+    //   provider: function () {
+    //     return new HDWalletProvider(privateKeys, MUMBAI_RPC_URL);
+    //   },
+    //   gas: 10000000,
+    //   gasPrice: 5000000000, // 5 gwei
+    //   network_id: 80001,
+    // },
     main: {
       provider: function () {
         return new HDWalletProvider(privateKeys, MAINNET_RPC_URL);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled, Box, Text, Link } from '@chakra-ui/react';
+import { Box, Text, Link } from '@chakra-ui/react';
 import contractAddress from '../../contractAddress';
 
 const Footer = () => (
