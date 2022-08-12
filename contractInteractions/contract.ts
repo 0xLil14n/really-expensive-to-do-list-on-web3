@@ -43,7 +43,6 @@ export const createNewTask = async (taskName: string) => {
     functionName: Methods.AddToList,
     params: { name: taskName },
   });
-  // return txn.wait();
 };
 
 export const getIsDone = async (taskName: string) => {

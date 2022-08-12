@@ -9,15 +9,8 @@ import LiliansList from '../../../abis/LiliansList.json';
 
 import LoadingState from './LoadingState';
 import TaskItem from './TaskItem';
+import { KOVAN_WEBSOCKET } from '../../../environment';
 
-const KOVAN_RPC_URL =
-  process.env.KOVAN_RPC_URL ||
-  'https://kovan.infura.io/v3/0150f5b8462544b8acf6fc2e7b8dc290';
-// TODO env file, lmao gotta add this to my todo list smdh
-
-const KOVAN_WEBSOCKET =
-  process.env.KOVAN_WEBSOCKET ||
-  'wss://kovan.infura.io/ws/v3/0150f5b8462544b8acf6fc2e7b8dc290';
 export type ToDoItem = {
   name: string;
   isDone: boolean;

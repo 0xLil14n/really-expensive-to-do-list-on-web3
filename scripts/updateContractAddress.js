@@ -2,7 +2,7 @@ import fs from 'fs';
 require('dotenv').config();
 const path = require('path');
 
-async function updateFrontEnd(deployedContractAddress: string) {
+async function updateFrontEnd(deployedContractAddress) {
   console.log('updating files');
 
   console.log('updating contractAddress on FE...');
@@ -12,7 +12,7 @@ async function updateFrontEnd(deployedContractAddress: string) {
     '../liliansListContractAddress.ts'
   );
 
-  fs.writeFileSync(contractAddrPath, data, (err: any) => {
+  fs.writeFileSync(contractAddrPath, data, (err) => {
     if (err) {
       console.error('ERROR: contract address not updated');
       throw err;
