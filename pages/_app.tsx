@@ -18,8 +18,8 @@ const SERVER_URL =
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <MoralisProvider
-      appId="DBofksEwejwcrHGi5N32hSsPKniOy46jV4aeIIOO"
-      serverUrl="https://ww8ofdl0e4tg.usemoralis.com:2053/server"
+      appId="9HZZxIsv7XisZ0t4x1jdRub6TK5xTJmg5CqSYrs2"
+      serverUrl="https://4g0cxcxkpzjg.usemoralis.com:2053/server"
     >
       <ChakraProvider theme={theme}>
         <CSSReset />
